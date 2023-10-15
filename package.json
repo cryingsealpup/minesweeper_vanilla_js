@@ -1,0 +1,23 @@
+{
+    "name": "minesweeper",
+    "version": "1.0.0",
+    "description": "minesweeper with vanilla js",
+    "main": "index.js",
+    "scripts": {
+        "test": "test"
+    },
+    "keywords": [
+        "minesweeper",
+        "game"
+    ],
+    "author": "Ekaterina Radchenko",
+    "license": "ISC",
+    "devDependencies": {
+        "browser-sync": "^2.29.3",
+        "gulp": "^4.0.2",
+        "gulp-notify": "^4.0.0",
+        "gulp-sass": "^5.1.0",
+        "gulp-watch": "^5.0.1",
+        "sass": "^1.63.6"
+    }
+}
