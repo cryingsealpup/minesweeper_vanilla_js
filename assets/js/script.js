@@ -1,12 +1,42 @@
-let width = 10,
-    bombsNum = 25,
-    isGameOver = false
+let bombsNum = 25,
+    isGameOver = false,
+    isStarted = false,
+    flags = 0,
+    minute = 0,
+    second = 0,
+    cron
 const grid = document.querySelector('.grid'),
     items = [], isLeftEdge = (i) => i % width === 0, 
-    isRightEdge = (i) => i % width === width - 1
+    isRightEdge = (i) => i % width === width - 1,
+    width = 10
 
 createBoard()
 
+function updateTimer() {
+    second += 1
+      if (second == 60) {
+        second = 0;
+        minute++;
+      }
+      if (minute == 60) {
+        minute = 0;
+      }
+      document.querySelector('.minutes').innerText = returnData(minute)
+      document.querySelector('.seconds').innerText = returnData(second)
+}
+
+function startTimer() {
+    stopTimer()
+    cron = setInterval(() => { updateTimer(); }, 1000)
+}
+
+function stopTimer() {
+    clearInterval(cron);
+}
+
+function returnData(input) {
+    return input >= 10 ? input : `0${input}`
+}
 
 function createBoard() {
     const bombs = Array(bombsNum).fill('bomb'),
@@ -19,16 +49,27 @@ function createBoard() {
         item.setAttribute('id', i)
         grid.appendChild(item)
         items.push(item)
-        item.addEventListener('click', () => {
-            processCell(item, i)
-        })
     }
 
-    for (let i = 1; i < items.length; i++) {
+    grid.addEventListener('mouseup', (e) => {
+        if (!isStarted) {
+            startTimer()
+            isStarted = true
+        }
+        if (e.button == 0 && e.target.classList.contains('grid-item')) {
+            processCell(e.target, e.target.id)
+        }
+        else if (e.button == 2 && e.target.classList.contains('grid-item')) {
+            e.preventDefault()
+            addFlag(e.target)
+        }
+    })
+
+    for (let i = 0; i < items.length; i++) {
         let neighborsNum = 0
         const isCellEmpty = items[i].classList.contains('empty')
 
-        if (isCellEmpty && !isLeftEdge(i) && hasBomb(items, i - 1)) neighborsNum++
+        if (isCellEmpty && i > 0 && !isLeftEdge(i) && hasBomb(items, i - 1)) neighborsNum++
         if (isCellEmpty && i > 9 && !isRightEdge(i) && hasBomb(items, i + 1 - width)) neighborsNum++
         if (isCellEmpty && i > 10 && hasBomb(items, i - width)) neighborsNum++
         if (isCellEmpty && !isLeftEdge(i) && i > 11 && hasBomb(items, i - 1 - width)) neighborsNum++
@@ -46,12 +87,12 @@ function hasBomb(arr, str) {
 
 function processCell(item, i) {
     if (isGameOver) return
-    if (item.classList.contains('bomb') || item.classList.contains('flag')) return
-    if (item.classList.contains('bomb')) alert('Game over!')
+    if (item.classList.contains('checked') || item.classList.contains('flag')) return
+    if (item.classList.contains('bomb')) gameOver()
     else {
         const total = item.getAttribute('data-neighbors')
         if (total > 0) {
-            item.textContent = total
+            item.innerHTML = total
             item.classList.add('checked')
             return
         }
@@ -61,41 +102,78 @@ function processCell(item, i) {
     item.classList.add('checked')
 }
 
+function addFlag(item) {
+    if (isGameOver) return
+    if (!item.classList.contains('flag') && !item.classList.contains('checked') && flags < bombsNum) {
+        item.classList.add('flag')
+        flags++
+        item.innerHTML = '🚩'
+        isGameWon()
+    } else if (item.classList.contains('flag')) {
+        item.innerHTML = ''
+        item.classList.remove('flag')
+        flags--
+    }
+}
+
 
 function checkSquare(i) {
     setTimeout(() => {
         if (i > 0 && !isLeftEdge(i)) {
             
-            const newItem = document.getElementById(i - 1)
-            processCell(newItem, +newItem.id)
+            const newItem = document.getElementById(+i - 1)
+            processCell(newItem, i - 1)
         }
         if (i > 9 && !isRightEdge(i)) {
-            const newItem = document.getElementById(i + 1 - width)
-            processCell(newItem, +newItem.id)
+            const newItem = document.getElementById(+i + 1 - width)
+            processCell(newItem, +i + 1 - width)
         }
         if (i > 10) {
-            const newItem = document.getElementById(i - width)
-            processCell(newItem, +newItem.id)
+            const newItem = document.getElementById(+i - width)
+            processCell(newItem, +i - width)
         }
         if (i > 11 && !isLeftEdge(i)) {
-            const newItem = document.getElementById(i - 1 - width)
-            processCell(newItem, +newItem.id)            
+            const newItem = document.getElementById(+i - 1 - width)
+            processCell(newItem, +i - 1 - width)            
         }
         if (i < 98 && !isRightEdge(i)) {
-            const newItem = document.getElementById(i + 1)
-            processCell(newItem, +newItem.id)    
+            const newItem = document.getElementById(+i + 1)
+            processCell(newItem, +i + 1)    
         }
         if (i < 90 && !isLeftEdge(i)) {
-            const newItem = document.getElementById(i - 1 + width)
-            processCell(newItem, +newItem.id)                
+            const newItem = document.getElementById(+i - 1 + width)
+            processCell(newItem, +i - 1 + width)                
         }
         if (i < 88 && !isRightEdge(i)) {
-            const newItem = document.getElementById(i + 1 + width)
-            processCell(newItem, +newItem.id)                
+            const newItem = document.getElementById(+i + 1 + width)
+            processCell(newItem, +i + 1 + width)                
         }       
         if (i < 89) {
-            const newItem = document.getElementById(i + width)
-            processCell(newItem, +newItem.id)                
+            const newItem = document.getElementById(+i + width)
+            processCell(newItem, +i + width)                
         }                
-    }, 5)
+    }, 1)
 }
+
+function isGameWon() {
+    let matches = 0
+    items.forEach((el) => {
+        if (el.classList.contains('bomb') && el.classList.contains('flag')) {
+            matches++
+        }
+    })
+    if (matches === bombsNum) {
+        alert('You win!')
+        isGameOver = true
+    }
+}
+
+function gameOver() {
+    isGameOver = true
+    stopTimer()
+    isStarted = false
+    items.forEach((el) => {
+        if (el.classList.contains('bomb')) el.innerHTML = '💣'
+    })
+}
+

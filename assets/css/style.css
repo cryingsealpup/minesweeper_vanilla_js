@@ -2,8 +2,18 @@ body {
   margin: 0;
   padding: 0;
   height: 98vh;
-  font-family: "Inter", sans-serif;
+  font-family: "VT323", monospace;
   font-weight: 600;
+  background: #ffff99;
+}
+
+h1 {
+  width: fit-content;
+  color: #b15928;
+}
+
+.timer {
+  color: #fdbf6f;
 }
 
 .grid {
@@ -15,6 +25,7 @@ body {
 }
 .grid-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   height: 95vh;
   align-items: center;
@@ -22,16 +33,42 @@ body {
 .grid-item {
   height: 2rem;
   width: 2rem;
-  border: 0.2rem solid black;
+  font-size: 1.5rem;
+  border: 0.2rem solid #1f78b4;
+  border-top: 0.2rem solid #cab2d6;
+  border-left: 0.2rem solid #cab2d6;
   transition: all 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: lightslategray;
+  background: #a6cee3;
+  cursor: pointer;
 }
-.grid-item.bomb {
-  background-color: red;
+.grid-item:hover {
+  background: #6a3d9a;
 }
 .grid-item.checked {
-  background-color: pink;
+  background-color: #cab2d6;
+  cursor: default;
+}
+.grid-item.checked[data-neighbors="1"] {
+  color: #e31a1c;
+}
+.grid-item.checked[data-neighbors="2"] {
+  color: #fb9a99;
+}
+.grid-item.checked[data-neighbors="3"] {
+  color: #ff7f00;
+}
+.grid-item.checked[data-neighbors="4"] {
+  color: #fdbf6f;
+}
+.grid-item.checked[data-neighbors="5"] {
+  color: #ffff99;
+}
+.grid-item.checked.bomb {
+  background-color: #e31a1c;
+}
+.grid-item.checked.bomb:focus {
+  background-color: orange;
 }
