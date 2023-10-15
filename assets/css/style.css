@@ -46,6 +46,11 @@ h1 {
   text-shadow: 3px 3px #fdbf6f;
 }
 
+.bombs-amount, .flags-amount {
+  margin: 1rem 0;
+  color: #fdbf6f;
+}
+
 .reset {
   margin-top: 2rem;
   border: 0.2rem solid #1f78b4;
@@ -146,6 +151,7 @@ h1 {
 }
 .modal ul li:last-child {
   font-size: 1.1rem;
+  font-style: italic;
 }
 .modal.hidden {
   left: -1000%;

@@ -1,4 +1,4 @@
-let bombsNum = localStorage.getItem('bombs') ? +localStorage.getItem('bombs') : 3,
+let bombsNum = localStorage.getItem('bombs') ? +localStorage.getItem('bombs') : 5,
     isGameOver = false,
     isStarted = false,
     flags = 0,
@@ -26,8 +26,12 @@ const grid = document.querySelector('.grid'),
     nameForm = document.querySelector('.auth-form'),
     nameTmp = document.querySelector('.name-tmp'), 
     logout = document.querySelector('.logout .save-name'),
-    bombsForm = document.querySelector('.bombs-form')
+    bombsForm = document.querySelector('.bombs-form'),
+    bombsAmount = document.querySelector('.bombs-amount'),
+    flagsAmount = document.querySelector('.flags-amount')
 
+bombsAmount.innerHTML = 'There are ' + bombsNum + ' bombs'
+flagsAmount.innerHTML = 'Flags left: ' + bombsNum
 resetBtn.classList.add('reset')
 resetBtn.innerHTML = 'New game'
 message.classList.add('message')
@@ -85,7 +89,7 @@ recordsBtn.addEventListener('click', () => {
             const records = JSON.parse(localStorage.getItem('game'))
             records.forEach((el) => {
                 const li = document.createElement('li')
-                li.innerHTML = el.user + ': ' + el.minutes + 'm ' + el.seconds + 's, ' + el.clicksNum + ' clicks'
+                li.innerHTML = el.user + ': ' + el.bombs + ' bombs, '  + el.minutes + 'm ' + el.seconds + 's, ' + el.clicksNum + ' clicks'
                 list.appendChild(li)
             })
         }
@@ -102,9 +106,9 @@ if (!localStorage.getItem('currentUser')) {
 
 function compareStats(a, b) {
     const minDiff = a.minutes - b.minutes, secDiff = a.seconds - b.seconds, 
-        clickDiff = a.clicks - b.clicks, bombsDiff = a.bombs - b.bombs
-    if (minDiff === 0 && secDiff !== 0) return secDiff
-    else if (minDiff === 0 && secDiff === 0 && bombsDiff !== 0) return bombsDiff
+        clickDiff = a.clicks - b.clicks, bombsDiff = b.bombs - a.bombs
+    if (bombsDiff !== 0) return bombsDiff
+    if (bombsDiff === 0 && minDiff === 0 && secDiff !== 0) return secDiff
     else if (minDiff === 0 && secDiff === 0 && bombsDiff === 0 && clickDiff !== 0) return clickDiff
     return minDiff;
   }
@@ -223,11 +227,14 @@ function addFlag(item) {
         item.classList.add('flag')
         flags++
         item.innerHTML = '🚩'
+        console.log(bombsNum - flags)
+        flagsAmount.innerHTML = 'Flags left: ' + (bombsNum - flags)
         isGameWon()
     } else if (item.classList.contains('flag')) {
         item.innerHTML = ''
         item.classList.remove('flag')
         flags--
+        flagsAmount.innerHTML = 'Flags left: ' + (bombsNum - flags)
     }
 }
 
@@ -281,9 +288,9 @@ function isGameWon() {
         isGameOver = true
         let userArr = localStorage.getItem('game') ? JSON.parse(localStorage.getItem('game')) : ''
         if (userArr) {
-            userArr.push(createRecord(clicks, minute, second, user, bombs))
+            userArr.push(createRecord(clicks, minute, second, user, bombsNum))
         } else {
-            userArr = [createRecord(clicks, minute, second, user, bombs)]
+            userArr = [createRecord(clicks, minute, second, user, bombsNum)]
         }
         userArr.sort(compareStats)
         if (userArr.length > 10) userArr = userArr.slice(0, 10) 
@@ -293,7 +300,7 @@ function isGameWon() {
             message.innerHTML = 'YOU WIN! \n Wanna try again?'
             const stats = document.createElement('p')
             stats.classList.add('stats')
-            stats.innerHTML = 'Finished in ' + minute + 'm ' + second + 's ' + '<br>' + 'Within ' + clicks + ' clicks'
+            stats.innerHTML =  bombsNum + ' detected' + '<br>' + 'Finished in ' + minute + 'm ' + second + 's ' + '<br>' + 'Within ' + clicks + ' clicks'
             //if ()
             message.appendChild(stats)
             grid.innerHTML = ''
