@@ -1,17 +1,32 @@
-let bombsNum = 25,
+let bombsNum = 3,
     isGameOver = false,
     isStarted = false,
     flags = 0,
     clicks = 0,
     minute = 0,
     second = 0,
+    userName,
     cron
+
 const grid = document.querySelector('.grid'),
     items = [], isLeftEdge = (i) => i % width === 0, 
     isRightEdge = (i) => i % width === width - 1,
+   // sortStorage = () => 
     width = 10,
     message = document.createElement('div'),
-    resetBtn = document.createElement('button')
+    resetBtn = document.createElement('button'),
+    modalInfo = document.querySelector(".modal-rules"),
+    modalRecords = document.querySelector(".modal-records"),
+    // closeModalBtn = document.querySelectorAll(".btn-close"),
+    overlay = document.querySelector(".overlay"),
+    infoBtn = document.querySelector(".rules"),
+    recordsBtn = document.querySelector(".records"),
+    settingsBtn = document.querySelector(".settings"),
+    modalName = document.querySelector('.modal-name'),
+    modalSettings = document.querySelector('.modal-settings'),
+    nameForm = document.querySelector('.auth-form'),
+    nameTmp = document.querySelector('.name-tmp'), 
+    logout = document.querySelector('.logout .save-name')
 
 resetBtn.classList.add('reset')
 resetBtn.innerHTML = 'New game'
@@ -19,9 +34,83 @@ message.classList.add('message')
 
 createBoard()
 
+nameForm.addEventListener('submit', (e) => {
+    console.log('in name')
+    e.preventDefault()
+    modalName.classList.add("hidden")
+    user = e.target.elements.userName.value
+    nameTmp.innerHTML = user
+    
+})
+
+logout.addEventListener('click', (e) => {
+    e.preventDefault()
+})
+
+settingsBtn.addEventListener('click', () => {
+    openModal(modalSettings)
+    if (isStarted) {
+        const input = modalSettings.querySelector('name-form'), 
+              error = document.createElement('div')
+        error.innerHTML = "You can't change bombs amount during the game"
+        error.classList.add('error')
+        input.querySelector('.save-name').disabled = true
+        input.bombs.disabled = true
+        modalSettings.appendChild(error)
+    }
+})
+
+infoBtn.addEventListener('click', () => {
+    openModal(modalInfo)
+})
+
+
+recordsBtn.addEventListener('click', () => {
+    openModal(modalRecords)
+    
+    if (localStorage.length > 0) {
+        const list = modalRecords.querySelector('.records-list')
+        for (let i = 0; i <= 10; i++) {
+            list.innerHTML = ''
+            const li = document.createElement('li')
+            Object.keys(localStorage).forEach((key) => {
+              
+            })
+        }
+    }
+
+})
+
+if (!localStorage.getItem('currentUser')) {
+    modalName.classList.remove('hidden')
+} else {
+    user = localStorage.getItem('currentUser')
+    nameTmp.innerHTML = user
+}
+
+function compareStats(a, b) {
+    const minDiff = a.minutes - b.minutes, secDiff = a.seconds - b.seconds, clickDiff = a.clicks - b.clicks
+    if (minDiff === 0 && secDiff !== 0) return secDiff
+    else if (clickDiff !== 0) return clickDiff
+    return minDiff;
+  }
+
+function openModal (modal) {
+    modal.classList.remove("hidden")
+    closeModal(modal)
+}
+
+function closeModal (modal) {
+    modal.querySelector('.btn-close').addEventListener('click', () => {
+        modal.classList.add("hidden")
+    })
+  }
+
 resetBtn.addEventListener('click', () => {
     location.reload()
 })
+
+
 
 function updateTimer() {
     second += 1
@@ -148,7 +237,7 @@ function checkSquare(i) {
             const newItem = document.getElementById(+i - 1 - width)
             processCell(newItem, +i - 1 - width)            
         }
-        if (i < 98 && !isRightEdge(i)) {
+        if (i < 99 && !isRightEdge(i)) {
             const newItem = document.getElementById(+i + 1)
             processCell(newItem, +i + 1)    
         }
@@ -175,15 +264,45 @@ function isGameWon() {
         }
     })
     if (matches === bombsNum) {
-        alert('You win!')
         isGameOver = true
+        let userArr = localStorage.getItem('game') ? JSON.parse(localStorage.getItem('game')) : ''
+        if (userArr) {
+            userArr.push(createRecord(clicks, minute, second, user))
+        } else {
+            userArr = [createRecord(clicks, minute, second, user)]
+        }
+        localStorage.setItem('currentUser', user)
+        userArr.sort(compareStats)
+        if (userArr.length > 10) userArr = userArr.slice(0, 10) 
+        localStorage.setItem('game', JSON.stringify(userArr))
+        stopTimer()
+        setTimeout(() => {
+            message.innerHTML = 'YOU WIN! \n Wanna try again?'
+            const stats = document.createElement('p')
+            stats.classList.add('stats')
+            stats.innerHTML = 'Finished in ' + minute + 'm ' + second + 's ' + '<br>' + 'Within ' + clicks + ' clicks'
+            //if ()
+            message.appendChild(stats)
+            grid.innerHTML = ''
+            grid.append(message, resetBtn)
+        }, 3000)
+    }
+}
+
+function createRecord(clicks, min, sec, user) {
+    return {
+        clicksNum: clicks,
+        minutes: min,
+        seconds: sec,
+        user: user
     }
 }
 
 function gameOver() {
     isGameOver = true
-    localStorage.setItem("time", minute + 'm ' + second + 's')
-    localStorage.setItem("clicks", clicks)
+
+    // localStorage.setItem("time", minute + 'm ' + second + 's')
+    // localStorage.setItem("clicks", clicks)
     stopTimer()
     isStarted = false
     items.forEach((el) => {

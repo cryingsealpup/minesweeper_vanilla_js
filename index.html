@@ -19,21 +19,97 @@
         <h1> Minesweeper </h1>
 
         <div class="actions">
+            <div class="left-pane">
             <div class="rules">
                 ℹ️
             </div>
+        </div>
             <div class="timer">
                 <span class="minutes">00</span>:<span class="seconds">00</span>
             </div>
-            <div class="records">
-                🏅
+            <div class="right-pane">
+                <div class="settings">
+                    ⚙️
+                </div>
+                <div class="records">
+                    🏅
+                </div>
             </div>
         </div>
         <div class="grid">
 
         </div>
     </div>
+    <div class="modal modal-rules hidden">
+        <div class="modal-wrapper">
+            <div class="modal-close">
+                <button class="btn-close">⨉</button>
+            </div>
+            <div class="modal-text">
+                <h2> Welcome to Minesweeper game! </h2>
+                <p> Here are some quick rules for playing Minesweeper: </p>
+                <ul>
+                    <li>
+                        Click on a square to reveal whether it contains a mine or not.
+                    </li>
+                    <li>
+                        If you reveal a mine, the game is over.
+                    </li>
+                    <li>
+                        If you reveal a cell without mine, the number on a cell shows the number of mines adjacent to
+                        it.
+                    </li>
+                    <li>
+                        If you reveal a cell without heighbouring mines, it will expand opened area up to cells with
+                        some.
+                    </li>
+                    <li>
+                        If you suspect that cell contains a mine, you can mark it with red flag by clicking on the right
+                        mouse button.
+                    </li>
+                    <li>
+                        When all mines marked with red flag, the game is over.
+                    </li>
+                </ul>
 
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-records hidden">
+        <div class="modal-wrapper">
+            <div class="modal-close">
+                <button class="btn-close">⨉</button>
+            </div>
+            <h2> Records table </h2>
+            <ol class="records-list">
+
+            </ol>
+        </div>
+    </div>
+    <div class="modal modal-settings hidden">
+        <div class="modal-wrapper">
+            <div class="modal-close">
+                <button class="btn-close">⨉</button>
+            </div>
+            <h2> Settings </h2>
+            <form class="name-form" >
+                <label for="bombs"> How many bombs you want to have? </label>
+                <input type="number" placeholder="3" min="3" max="40" name="bombs" autocomplete="off" spellcheck="off" autofocus suggestions="false" required>
+                <button class="save-name" type="submit"> Save </button>
+            </form>
+            <div class="logout"> Not <span class="name-tmp"></span>? <button class="save-name" type="submit"> Log out </button></div>
+            
+        </div>
+    </div>
+    <div class="modal modal-name hidden">
+        <div class="modal-wrapper">
+            <h2> What's your name? </h2>
+            <form class="name-form auth-form" >
+                <input type="text" placeholder="Enter your name" minlength="3" name="userName" autocomplete="off" spellcheck="off" autofocus suggestions="false" required>
+                <button type="submit"> Save </button>
+            </form>
+        </div>
+    </div>
     <script src="assets/js/script.js"></script>
 </body>
 

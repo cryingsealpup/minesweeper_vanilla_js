@@ -50,14 +50,102 @@ h1
     font-size: 2rem
     font-family: inherit
     padding: 0.5rem
+    transition: all 0.1s ease
     &:hover
         color: #ffff99
         text-shadow: 2px 2px #fdbf6f
         background: #6a3d9a
 
-.rules, .records
+.rules, .records, .settings
     cursor: pointer 
     
+.stats
+    font-size: 1.5rem
+    text-shadow: none
+
+.right-pane, .left-pane
+    display: flex
+    gap: 0.4rem
+    width: 3rem
+
+.name
+    &-form
+        display: flex
+        flex-direction: column
+        gap: 2rem
+        align-items: center
+        width: 11.5rem
+
+.modal 
+  position: absolute
+  top: 21.5%
+  width: 100%
+  left: 0
+  transition: left .3s ease-in-out
+  color: #ff7f00
+  button
+    padding: 0.5rem 0.7rem
+    background: #ffff99
+    cursor: pointer
+    color: #ff7f00
+    border: 0.1rem solid #ff7f00  
+    border-top: 0.1rem solid #fdbf6f 
+    border-left: 0.1rem solid #fdbf6f 
+    font-family: "VT323", monospace
+    transition: all 0.1s ease
+    &:focus, &:hover
+        border: 0.1rem solid #fdbf6f 
+        border-top: 0.1rem solid #ff7f00  
+        border-left: 0.1rem solid #ff7f00   
+  input
+    background: #ffff99
+    color: #ff7f00
+    border: 0.1rem solid #ff7f00  
+    border-top: 0.1rem solid #fdbf6f 
+    border-left: 0.1rem solid #fdbf6f 
+    padding: 0 0.5rem
+    height: 3rem
+    font-size: 1.1rem
+    font-family: "VT323", monospace
+    &::placeholder
+        padding: 0 0.5rem
+        color: #fdbf6f 
+        margin: 0
+
+  &-wrapper 
+    display: flex
+    margin: 0 auto
+    flex-direction: column
+    justify-content: center
+    width: 24rem
+    height: 24rem
+    padding: 1.3rem
+    background: #a6cee3
+    border: 0.2rem solid #1f78b4
+    border-top: 0.2rem solid #cab2d6
+    border-left: 0.2rem solid #cab2d6
+  h2 
+    font-style: italic
+    text-shadow: 2px 2px #ffff99
+  ul li:last-child 
+    font-size: 1.1rem
+  &.hidden
+    left: -1000%
+  &-close
+    display: flex
+    button
+        transform: translate(10px, -20px)
+  &-name .modal-wrapper, &-settings .modal-wrapper
+    align-items: center
+  &-settings .modal-close
+    width: 100%
+
+.logout 
+    display: flex
+    gap: 0.5rem
+    align-items: center
+    margin: 1.5rem 0 0
+
 .grid 
     width: 24rem
     height: 24rem
