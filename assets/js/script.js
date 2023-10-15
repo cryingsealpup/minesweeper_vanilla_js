@@ -1,4 +1,4 @@
-let bombsNum = 3,
+let bombsNum = localStorage.getItem('bombs') ? +localStorage.getItem('bombs') : 3,
     isGameOver = false,
     isStarted = false,
     flags = 0,
@@ -7,7 +7,6 @@ let bombsNum = 3,
     second = 0,
     userName,
     cron
-
 const grid = document.querySelector('.grid'),
     items = [], isLeftEdge = (i) => i % width === 0, 
     isRightEdge = (i) => i % width === width - 1,
@@ -26,37 +25,48 @@ const grid = document.querySelector('.grid'),
     modalSettings = document.querySelector('.modal-settings'),
     nameForm = document.querySelector('.auth-form'),
     nameTmp = document.querySelector('.name-tmp'), 
-    logout = document.querySelector('.logout .save-name')
+    logout = document.querySelector('.logout .save-name'),
+    bombsForm = document.querySelector('.bombs-form')
 
 resetBtn.classList.add('reset')
 resetBtn.innerHTML = 'New game'
 message.classList.add('message')
 
 createBoard()
+authListener()
 
-nameForm.addEventListener('submit', (e) => {
-    console.log('in name')
-    e.preventDefault()
-    modalName.classList.add("hidden")
-    user = e.target.elements.userName.value
-    nameTmp.innerHTML = user
+function authListener() {
+    nameForm.addEventListener('submit', (e) => {
     
+        e.preventDefault()
+        modalName.classList.add("hidden")
+        user = e.target.elements.userName.value
+        localStorage.setItem('currentUser', user)
+        nameTmp.innerHTML = user
+        
+    })
+}
+
+bombsForm.addEventListener('submit', (e) => {
+    e.preventDefault() 
+    localStorage.setItem('bombs', e.target.elements.bombs.value)
+   // bombsNum = e.target.elements.bombs.value
+    location.reload()
 })
 
 logout.addEventListener('click', (e) => {
-    e.preventDefault()
+    localStorage.removeItem('currentUser')
+    location.reload()
 })
 
 settingsBtn.addEventListener('click', () => {
     openModal(modalSettings)
     if (isStarted) {
-        const input = modalSettings.querySelector('name-form'), 
-              error = document.createElement('div')
+        const input = modalSettings.querySelector('.name-form'), 
+              error = modalSettings.querySelector('.error')
         error.innerHTML = "You can't change bombs amount during the game"
-        error.classList.add('error')
-        input.querySelector('.save-name').disabled = true
+        document.querySelector('.save-bombs').disabled = true
         input.bombs.disabled = true
-        modalSettings.appendChild(error)
     }
 })
 
@@ -72,9 +82,11 @@ recordsBtn.addEventListener('click', () => {
         const list = modalRecords.querySelector('.records-list')
         for (let i = 0; i <= 10; i++) {
             list.innerHTML = ''
-            const li = document.createElement('li')
-            Object.keys(localStorage).forEach((key) => {
-              
+            const records = JSON.parse(localStorage.getItem('game'))
+            records.forEach((el) => {
+                const li = document.createElement('li')
+                li.innerHTML = el.user + ': ' + el.minutes + 'm ' + el.seconds + 's, ' + el.clicksNum + ' clicks'
+                list.appendChild(li)
             })
         }
     }
@@ -89,9 +101,11 @@ if (!localStorage.getItem('currentUser')) {
 }
 
 function compareStats(a, b) {
-    const minDiff = a.minutes - b.minutes, secDiff = a.seconds - b.seconds, clickDiff = a.clicks - b.clicks
+    const minDiff = a.minutes - b.minutes, secDiff = a.seconds - b.seconds, 
+        clickDiff = a.clicks - b.clicks, bombsDiff = a.bombs - b.bombs
     if (minDiff === 0 && secDiff !== 0) return secDiff
-    else if (clickDiff !== 0) return clickDiff
+    else if (minDiff === 0 && secDiff === 0 && bombsDiff !== 0) return bombsDiff
+    else if (minDiff === 0 && secDiff === 0 && bombsDiff === 0 && clickDiff !== 0) return clickDiff
     return minDiff;
   }
 
@@ -237,7 +251,7 @@ function checkSquare(i) {
             const newItem = document.getElementById(+i - 1 - width)
             processCell(newItem, +i - 1 - width)            
         }
-        if (i < 99 && !isRightEdge(i)) {
+        if (i < 98 && !isRightEdge(i)) {
             const newItem = document.getElementById(+i + 1)
             processCell(newItem, +i + 1)    
         }
@@ -267,11 +281,10 @@ function isGameWon() {
         isGameOver = true
         let userArr = localStorage.getItem('game') ? JSON.parse(localStorage.getItem('game')) : ''
         if (userArr) {
-            userArr.push(createRecord(clicks, minute, second, user))
+            userArr.push(createRecord(clicks, minute, second, user, bombs))
         } else {
-            userArr = [createRecord(clicks, minute, second, user)]
+            userArr = [createRecord(clicks, minute, second, user, bombs)]
         }
-        localStorage.setItem('currentUser', user)
         userArr.sort(compareStats)
         if (userArr.length > 10) userArr = userArr.slice(0, 10) 
         localStorage.setItem('game', JSON.stringify(userArr))
@@ -289,12 +302,13 @@ function isGameWon() {
     }
 }
 
-function createRecord(clicks, min, sec, user) {
+function createRecord(clicks, min, sec, user, bombs) {
     return {
         clicksNum: clicks,
         minutes: min,
         seconds: sec,
-        user: user
+        user: user,
+        bombs: bombs
     }
 }
 
