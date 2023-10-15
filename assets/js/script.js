@@ -2,15 +2,26 @@ let bombsNum = 25,
     isGameOver = false,
     isStarted = false,
     flags = 0,
+    clicks = 0,
     minute = 0,
     second = 0,
     cron
 const grid = document.querySelector('.grid'),
     items = [], isLeftEdge = (i) => i % width === 0, 
     isRightEdge = (i) => i % width === width - 1,
-    width = 10
+    width = 10,
+    message = document.createElement('div'),
+    resetBtn = document.createElement('button')
+
+resetBtn.classList.add('reset')
+resetBtn.innerHTML = 'New game'
+message.classList.add('message')
 
 createBoard()
+
+resetBtn.addEventListener('click', () => {
+    location.reload()
+})
 
 function updateTimer() {
     second += 1
@@ -52,6 +63,7 @@ function createBoard() {
     }
 
     grid.addEventListener('mouseup', (e) => {
+        clicks++
         if (!isStarted) {
             startTimer()
             isStarted = true
@@ -170,10 +182,18 @@ function isGameWon() {
 
 function gameOver() {
     isGameOver = true
+    localStorage.setItem("time", minute + 'm ' + second + 's')
+    localStorage.setItem("clicks", clicks)
     stopTimer()
     isStarted = false
     items.forEach((el) => {
         if (el.classList.contains('bomb')) el.innerHTML = '💣'
     })
+    setTimeout(() => {
+        message.innerHTML = 'YOU LOSE! \n Wanna try again?'
+        grid.innerHTML = ''
+        grid.append(message, resetBtn)
+    }, 5000)
+
 }
 

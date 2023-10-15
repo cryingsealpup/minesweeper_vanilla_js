@@ -9,15 +9,64 @@ body
 h1 
     width: fit-content
     color: #b15928
+    margin: 0
     
+.actions 
+    display: flex
+    justify-content: space-between
+    width: 22rem
+    align-items: center
+    text-align: center
+
+.rules
+    color: #cab2d6
+    border-radius: 100%
+    width: 1.5rem
+    height: 1.5rem
+    background: #b15928
+    box-shadow: 1px 1px #fdbf6f
+    display: flex
+    align-items: center
+    justify-content: center 
+
 .timer
     color: #fdbf6f
+    margin: 1rem 0
+
+.message
+    color: #ffff99
+    font-size: 3rem
+    margin: 0 3.5rem
+    text-align: center
+    text-shadow: 3px 3px #fdbf6f
+
+.reset 
+    margin-top: 2rem
+    border: 0.2rem solid #1f78b4
+    border-top: 0.2rem solid #cab2d6
+    border-left: 0.2rem solid #cab2d6
+    background: #a6cee3
+    color: #b15928
+    font-size: 2rem
+    font-family: inherit
+    padding: 0.5rem
+    &:hover
+        color: #ffff99
+        text-shadow: 2px 2px #fdbf6f
+        background: #6a3d9a
+
+.rules, .records
+    cursor: pointer 
+    
 .grid 
     width: 24rem
     height: 24rem
     display: flex
     flex-wrap: wrap
     background: slategray
+    align-items: center
+    justify-content: center
+    align-content: center
     &-container
         display: flex
         flex-direction: column
