@@ -33,6 +33,46 @@ h1
     color: #fdbf6f
     margin: 1rem 0
 
+.confetti
+    display: flex
+    justify-content: center
+    align-items: center
+    position: absolute
+    width: 100%
+    height: 100%
+    overflow: hidden
+    z-index: 1000
+    top: 0
+    transition: top 0.3s ease-out
+    &-piece 
+        position: absolute
+        width: 10px
+        height: 30px
+        background: #ffd300
+        top: 0
+        opacity: 0
+    &.hidden
+        top: -100%
+
+$colors: (#d13447, #ffbf00, #263672)    
+@for $i from 1 through 24
+  $w: random(25)+8
+  $l: random(100)+8
+  .confetti-piece:nth-child(#{$i}) 
+    width: #{$w}px
+    height: #{$w*0.5}px
+    background-color: nth($colors, random(3))
+    top: -10%
+    left: unquote($l+"%")
+    opacity: random() + 0.5
+    transform: rotate(#{random()*360deg})
+    animation: drop-#{$i} unquote(4+random()+"s") unquote(random()+"s") infinite
+    @keyframes drop-#{$i}
+        100% 
+            top: 110%
+            left: unquote($l+random(15)+"%")
+    
+  
 .message
     color: #ffff99
     font-size: 3rem

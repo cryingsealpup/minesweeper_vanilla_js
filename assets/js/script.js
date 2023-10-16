@@ -38,7 +38,8 @@ const grid = document.querySelector('.grid'),
     logout = document.querySelector('.logout .save-name'),
     bombsForm = document.querySelector('.bombs-form'),
     bombsAmount = document.querySelector('.bombs-amount'),
-    flagsAmount = document.querySelector('.flags-amount')
+    flagsAmount = document.querySelector('.flags-amount'),
+    confetti = document.querySelector('.confetti')
 
 bombsAmount.innerHTML = 'There are ' + bombsNum + ' bombs'
 flagsAmount.innerHTML = 'Flags left: ' + bombsNum
@@ -309,12 +310,14 @@ function isGameWon() {
         if (userArr.length > 10) userArr = userArr.slice(0, 10) 
         localStorage.setItem('game', JSON.stringify(userArr))
         stopTimer()
+        confetti.classList.remove('hidden')
         setTimeout(() => {
             message.innerHTML = 'YOU WIN! \n Wanna try again?'
             const stats = document.createElement('p')
             stats.classList.add('stats')
             stats.innerHTML =  bombsNum + ' detected' + '<br>' + 'Finished in ' + minute + 'm ' + second + 's ' + '<br>' + 'Within ' + clicks + ' clicks'
             //if ()
+            confetti.classList.add('hidden')
             message.appendChild(stats)
             grid.innerHTML = ''
             grid.append(message, resetBtn)

@@ -12,3 +12,5 @@ https://minesweeper.online/ru/game/2699515666
 https://learn.javascript.ru/event-delegation
 
 https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+
+https://codepen.io/fionnachan/pen/EvaqOB
