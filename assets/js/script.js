@@ -184,6 +184,8 @@ function createBoard() {
         }
     })
 
+    grid.addEventListener("contextmenu", e => e.preventDefault());
+
     for (let i = 0; i < items.length; i++) {
         let neighborsNum = 0
         const isCellEmpty = items[i].classList.contains('empty')
