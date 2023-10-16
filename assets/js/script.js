@@ -65,7 +65,7 @@ logout.addEventListener('click', (e) => {
 
 settingsBtn.addEventListener('click', () => {
     openModal(modalSettings)
-    if (isStarted) {
+    if (!isGameOver) {
         const input = modalSettings.querySelector('.name-form'), 
               error = modalSettings.querySelector('.error')
         error.innerHTML = "You can't change bombs amount during the game"
