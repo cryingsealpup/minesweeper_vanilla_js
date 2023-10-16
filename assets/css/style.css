@@ -239,3 +239,13 @@ h1 {
 .grid-item.checked.bomb:focus {
   background-color: orange;
 }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 25rem;
+  margin: 0 auto;
+}
+.footer img {
+  width: 3rem;
+}

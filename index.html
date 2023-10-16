@@ -20,10 +20,10 @@
 
         <div class="actions">
             <div class="left-pane">
-            <div class="rules">
-                ℹ️
+                <div class="rules">
+                    ℹ️
+                </div>
             </div>
-        </div>
             <div class="timer">
                 <span class="minutes">00</span>:<span class="seconds">00</span>
             </div>
@@ -40,14 +40,21 @@
 
         </div>
         <div class="quick-intro">
-           To win, mark bombs with a flag by using the right mouse button
+            To win, mark bombs with a flag by using the right mouse button
         </div>
-        <div class="bombs-amount"> 
+        <div class="bombs-amount">
 
         </div>
-        <div class="flags-amount"> 
+        <div class="flags-amount">
 
         </div>
+    </div>
+    <div class="footer">
+            <p>© 2023 Ekaterina Radchenko</p>
+                <p> <a href="https://rs.school/js-stage0/"> <img src="assets/img/rs_school_js.svg" alt="RS School logo"></a>
+                </p>
+                <p> <a href="https://github.com/cryingsealpup"> <img src="assets/img/GitHub_Logo.png" alt="GitHub logo"></a>
+                </p>
     </div>
     <div class="modal modal-rules hidden">
         <div class="modal-wrapper">
@@ -101,21 +108,24 @@
                 <button class="btn-close">⨉</button>
             </div>
             <h2> Settings </h2>
-            <form class="name-form bombs-form" >
+            <form class="name-form bombs-form">
                 <label for="bombs"> How many bombs you want to have? </label>
-                <input type="number" placeholder="3" min="3" max="40" name="bombs" autocomplete="off" spellcheck="off" autofocus suggestions="false" required>
+                <input type="number" placeholder="3" min="3" max="40" name="bombs" autocomplete="off" spellcheck="off"
+                    autofocus suggestions="false" required>
                 <button class="save-bombs" type="submit"> Save </button>
-            <div class="error"></div>
+                <div class="error"></div>
             </form>
-            <div class="logout"> Not <span class="name-tmp"></span>? <button class="save-name" type="submit"> Log out </button></div>
-            
+            <div class="logout"> Not <span class="name-tmp"></span>? <button class="save-name" type="submit"> Log out
+                </button></div>
+
         </div>
     </div>
     <div class="modal modal-name hidden">
         <div class="modal-wrapper">
             <h2> What's your name? </h2>
-            <form class="name-form auth-form" >
-                <input type="text" placeholder="Enter your name" minlength="3" name="userName" autocomplete="off" spellcheck="off" autofocus suggestions="false" required>
+            <form class="name-form auth-form">
+                <input type="text" placeholder="Enter your name" minlength="3" name="userName" autocomplete="off"
+                    spellcheck="off" autofocus suggestions="false" required>
                 <button type="submit"> Save </button>
             </form>
         </div>
