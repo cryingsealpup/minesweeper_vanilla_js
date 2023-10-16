@@ -46,9 +46,13 @@ h1 {
   text-shadow: 3px 3px #fdbf6f;
 }
 
-.bombs-amount, .flags-amount {
+.bombs-amount, .flags-amount, .quick-intro {
   margin: 1rem 0;
   color: #fdbf6f;
+}
+
+.quick-intro {
+  color: #b15928;
 }
 
 .reset {
