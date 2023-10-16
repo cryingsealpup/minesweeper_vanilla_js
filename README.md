@@ -1,6 +1,8 @@
 # minesweeper_vanilla_js
 This project is a try to develop minesweeper game with pure JS, CSS and HTML only. 
 
+Deploy: https://cryingsealpup.github.io/minesweeper_vanilla_js/
+
 Sources:
 
 https://www.youtube.com/watch?v=rxdGAKRndz8
