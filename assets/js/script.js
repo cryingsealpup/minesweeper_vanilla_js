@@ -191,14 +191,12 @@ function createBoard() {
         if (isCellEmpty && i > 0 && !isLeftEdge(i) && hasBomb(items, i - 1)) neighborsNum++
         if (isCellEmpty && i > 9 && !isRightEdge(i) && hasBomb(items, i + 1 - width)) neighborsNum++
         if (isCellEmpty && i > 10 && hasBomb(items, i - width)) neighborsNum++
-        if (isCellEmpty && !isLeftEdge(i) && i > 11 && hasBomb(items, i - 1 - width)) neighborsNum++
-        if (isCellEmpty && !isRightEdge(i) && i < 98 && hasBomb(items, i + 1)) neighborsNum++
-        if (isCellEmpty && !isLeftEdge(i) && i < 90 && hasBomb(items, i - 1 + width)) neighborsNum++
-        if (isCellEmpty && !isRightEdge(i) && i < 88 && hasBomb(items, i + 1 + width)) neighborsNum++
+        if (isCellEmpty && !isLeftEdge(i) && i >= 11 && hasBomb(items, i - 1 - width)) neighborsNum++
+        if (isCellEmpty && !isRightEdge(i) && i <= 98 && hasBomb(items, i + 1)) neighborsNum++
+        if (isCellEmpty && !isLeftEdge(i) && i <= 90 && hasBomb(items, i - 1 + width)) neighborsNum++
+        if (isCellEmpty && !isRightEdge(i) && i <= 88 && hasBomb(items, i + 1 + width)) neighborsNum++
         if (isCellEmpty && i < 89 && hasBomb(items, i + width)) neighborsNum++
-        if (i === 88 && hasBomb(items, i + width + 1)) neighborsNum++
-        if (i === 89 && hasBomb(items, i + width)) neighborsNum++
-        if (i === 98 && hasBomb(items, i + 1)) neighborsNum++;    
+
         items[i].setAttribute('data-neighbors', neighborsNum)
     }
 }
@@ -253,15 +251,15 @@ function checkSquare(i) {
             const newItem = document.getElementById(+i + 1 - width)
             processCell(newItem, +i + 1 - width)
         }
-        if (i > 10) {
+        if (i >= 10) {
             const newItem = document.getElementById(+i - width)
             processCell(newItem, +i - width)
         }
-        if (i > 11 && !isLeftEdge(i)) {
+        if (i >= 11 && !isLeftEdge(i)) {
             const newItem = document.getElementById(+i - 1 - width)
             processCell(newItem, +i - 1 - width)            
         }
-        if (i < 98 && !isRightEdge(i)) {
+        if (i < 99 && !isRightEdge(i)) {
             const newItem = document.getElementById(+i + 1)
             processCell(newItem, +i + 1)    
         }
