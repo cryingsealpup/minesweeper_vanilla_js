@@ -33,7 +33,7 @@ h1
     color: #fdbf6f
     margin: 1rem 0
 
-.confetti
+.confetti, .danger
     display: flex
     justify-content: center
     align-items: center
@@ -43,7 +43,7 @@ h1
     overflow: hidden
     z-index: 1000
     top: 0
-    transition: top 0.3s ease-out
+    transition: top 1s ease-out
     &-piece 
         position: absolute
         width: 10px
@@ -54,8 +54,21 @@ h1
     &.hidden
         top: -100%
 
+.danger
+    animation: change-color 0.15s infinite
+    transition: none
+    z-index: 0
+@keyframes change-color
+  from
+    background-color: #ed7e07
+  50%
+    background-color: #ffd300
+  to 
+    background-color: #d13447
+
+
 $colors: (#d13447, #ffbf00, #263672)    
-@for $i from 1 through 24
+@for $i from 1 through 48
   $w: random(25)+8
   $l: random(100)+8
   .confetti-piece:nth-child(#{$i}) 
@@ -66,7 +79,7 @@ $colors: (#d13447, #ffbf00, #263672)
     left: unquote($l+"%")
     opacity: random() + 0.5
     transform: rotate(#{random()*360deg})
-    animation: drop-#{$i} unquote(4+random()+"s") unquote(random()+"s") infinite
+    animation: drop-#{$i} unquote(1+random()+"s") unquote(random()+"s") infinite
     @keyframes drop-#{$i}
         100% 
             top: 110%
@@ -102,6 +115,9 @@ $colors: (#d13447, #ffbf00, #263672)
 
 .rules, .records, .settings
     cursor: pointer 
+    transition: all 0.1s ease
+    &:hover
+        filter: sepia(1)
     
 .stats
     font-size: 1.5rem
@@ -127,6 +143,7 @@ $colors: (#d13447, #ffbf00, #263672)
   left: 0
   transition: left .3s ease-in-out
   color: #ff7f00
+  z-index: 3
   button
     padding: 0.5rem 0.7rem
     background: #ffff99
@@ -200,6 +217,7 @@ $colors: (#d13447, #ffbf00, #263672)
     align-items: center
     justify-content: center
     align-content: center
+    z-index: 2
     &-container
         display: flex
         flex-direction: column

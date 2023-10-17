@@ -39,7 +39,8 @@ const grid = document.querySelector('.grid'),
     bombsForm = document.querySelector('.bombs-form'),
     bombsAmount = document.querySelector('.bombs-amount'),
     flagsAmount = document.querySelector('.flags-amount'),
-    confetti = document.querySelector('.confetti')
+    confetti = document.querySelector('.confetti'),
+    danger = document.querySelector('.danger')
 
 bombsAmount.innerHTML = 'There are ' + bombsNum + ' bombs'
 flagsAmount.innerHTML = 'Flags left: ' + bombsNum
@@ -317,11 +318,11 @@ function isGameWon() {
             stats.classList.add('stats')
             stats.innerHTML =  bombsNum + ' detected' + '<br>' + 'Finished in ' + minute + 'm ' + second + 's ' + '<br>' + 'Within ' + clicks + ' clicks'
             //if ()
-            confetti.classList.add('hidden')
             message.appendChild(stats)
             grid.innerHTML = ''
             grid.append(message, resetBtn)
-        }, 3000)
+            confetti.classList.add('hidden')
+        }, 4000)
     }
 }
 
@@ -345,10 +346,13 @@ function gameOver() {
     items.forEach((el) => {
         if (el.classList.contains('bomb')) el.innerHTML = '💣'
     })
+    danger.classList.remove('hidden')
     setTimeout(() => {
         message.innerHTML = 'YOU LOSE! \n Wanna try again?'
+        
         grid.innerHTML = ''
         grid.append(message, resetBtn)
+        danger.classList.add('hidden')
     }, 5000)
 
 }
