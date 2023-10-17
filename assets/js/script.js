@@ -77,7 +77,6 @@ logout.addEventListener('click', (e) => {
 
 settingsBtn.addEventListener('click', () => {
     openModal(modalSettings)
-    console.log(isStarted, isGameWon)
     if (isStarted) {
         const input = modalSettings.querySelector('.name-form'), 
               error = modalSettings.querySelector('.error')
