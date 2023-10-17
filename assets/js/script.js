@@ -76,10 +76,11 @@ logout.addEventListener('click', (e) => {
 
 settingsBtn.addEventListener('click', () => {
     openModal(modalSettings)
-    if (!isGameOver) {
+    console.log(isStarted)
+    if (isStarted) {
         const input = modalSettings.querySelector('.name-form'), 
               error = modalSettings.querySelector('.error')
-        error.innerHTML = "You can't change bombs amount during the game"
+        error.innerHTML = "You can't change the number of bombs when you have already stepped on the field. Finish the game with a loss or a win"
         document.querySelector('.save-bombs').disabled = true
         input.bombs.disabled = true
     }
@@ -204,7 +205,7 @@ function createBoard() {
         if (isCellEmpty && i > 0 && !isLeftEdge(i) && hasBomb(items, i - 1)) neighborsNum++
         if (isCellEmpty && i > 9 && !isRightEdge(i) && hasBomb(items, i + 1 - width)) neighborsNum++
         if (isCellEmpty && i > 10 && hasBomb(items, i - width)) neighborsNum++
-        if (isCellEmpty && !isLeftEdge(i) && i >= 11 && hasBomb(items, i - 1 - width)) neighborsNum++
+        if (isCellEmpty && !isLeftEdge(i) && i > 11 && hasBomb(items, i - 1 - width)) neighborsNum++
         if (isCellEmpty && !isRightEdge(i) && i <= 98 && hasBomb(items, i + 1)) neighborsNum++
         if (isCellEmpty && !isLeftEdge(i) && i <= 90 && hasBomb(items, i - 1 + width)) neighborsNum++
         if (isCellEmpty && !isRightEdge(i) && i <= 88 && hasBomb(items, i + 1 + width)) neighborsNum++
