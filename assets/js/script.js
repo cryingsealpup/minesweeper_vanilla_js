@@ -77,6 +77,7 @@ logout.addEventListener('click', (e) => {
 
 settingsBtn.addEventListener('click', () => {
     openModal(modalSettings)
+    console.log(isStarted, isGameWon)
     if (isStarted) {
         const input = modalSettings.querySelector('.name-form'), 
               error = modalSettings.querySelector('.error')
@@ -301,6 +302,7 @@ function isGameWon() {
     })
     if (matches === bombsNum) {
         isGameOver = true
+        isStarted = false
         let userArr = localStorage.getItem('game') ? JSON.parse(localStorage.getItem('game')) : ''
         if (userArr) {
             userArr.push(createRecord(clicks, minute, second, user, bombsNum))
